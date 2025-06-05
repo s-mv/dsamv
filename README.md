@@ -2,6 +2,8 @@
 
 That's it. Just me doing DSA.
 
+~~PS: I just wrote my own JSON parsers for testing. Isn't the proof enough that I must be good at DSA?~~
+
 Run solutions using **`python make.py <type> <problem> [lang]`**.
 
 ## Example usage:
