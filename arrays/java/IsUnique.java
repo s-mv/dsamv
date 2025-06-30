@@ -1,31 +1,27 @@
-import java.util.ArrayList;
-import java.util.HashMap;
+package arrays.java;
 
-public class IsUnique {
-    static HashMap<String, Boolean> tests;
+import helpers.Helper;
+import helpers.StringFunction;
 
-    IsUnique() {
-        tests = new HashMap<>();
-        tests.put("you shall not pass", false);
-        tests.put("you can", true);
-        tests.put("you cannot", false);
-        tests.put("maybe no?", true);
-    }
+import java.util.HashSet;
 
-    static boolean solution(String input) {
-        ArrayList<Character> list = new ArrayList<>();
-        for (int i = 0; i < input.length(); i++) {
-            if (list.contains(input.charAt(i)))
+public class IsUnique implements StringFunction<Boolean> {
+    public Boolean solution(String input) {
+        HashSet<Character> seen = new HashSet<>();
+        for (char c : input.toCharArray()) {
+            if (seen.contains(c))
                 return false;
-            list.add(input.charAt(i));
+            seen.add(c);
         }
         return true;
     }
 
     public static void main(String[] args) {
-        tests.forEach((k, v) -> {
-            boolean solution = solution(k);
-            System.out.println("Running input " + k + " -> " + (solution == v ? "PASSED" : "FAILED"));
-        });
+        if (args.length == 0) {
+            System.err.println("Usage: java IsUnique <path-to-test-file>");
+            return;
+        }
+
+        Helper.test(new IsUnique(), args[0]);
     }
 }

@@ -23,7 +23,6 @@ JSONMV::JSONValue::JSONValue(JSONObject &&value) : type(JSONType::json_object) {
 
 JSONMV::JSONValue::~JSONValue() { cleanUp(); }
 
-// Copy Constructor
 JSONMV::JSONValue::JSONValue(const JSONValue &other) : type(other.type) {
   switch (type) {
   case JSONType::json_null:

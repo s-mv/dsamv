@@ -23,3 +23,8 @@ DP/*.class
 
 .cache/
 __pycache__
+
+venv
+
+build/
+tests/user/

@@ -4,15 +4,15 @@ That's it. Just me doing DSA.
 
 ~~PS: I just wrote my own JSON parsers for testing. Isn't the proof enough that I must be good at DSA?~~
 
-Run solutions using **`python make.py <type> <problem> [lang]`**.
+Run solutions using **`python dsa.py <type> <problem> [lang]`**.
 
 ## Example usage:
 ```sh
-python make.py arrays IsUnique          # runs arrays/cpp/IsUnique.cpp
-python make.py arrays IsUnique java     # runs arrays/java/IsUnique.java
-python make.py arrays Palindrome py     # runs arrays/python/Palindrome.py
-python make.py list                     # shows all problems
-python make.py list arrays              # shows only arrays problems
+python dsa.py arrays IsUnique          # runs arrays/cpp/IsUnique.cpp
+python dsa.py arrays IsUnique java     # runs arrays/java/IsUnique.java
+python dsa.py arrays Palindrome py     # runs arrays/python/Palindrome.py
+python dsa.py list                     # shows all problems
+python dsa.py list arrays              # shows only arrays problems
 ```
 
 If there are any issues with `toml`, run `pip install toml` (Python < 3.11).
@@ -40,7 +40,7 @@ Each problem type has its own description file:
 - `DP/DESC.md` - Dynamic Programming problems
 - `linkedlist/DESC.md` - Linked List problems
 
-Or just run `python make.py list` to see what's implemented!
+Or just run `python dsa.py list` to see what's implemented!
 
 ---
 

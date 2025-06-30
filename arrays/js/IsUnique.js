@@ -1,31 +1,16 @@
-class IsUnique {
-  constructor() {
-    this.tests = {
-      "you shall not pass": false,
-      "you can": true,
-      "you cannot": false,
-      "maybe no?": true
-    };
-  }
+import Helper from "../../helpers/Helper.js";
 
-  static solution = (input) => {
-    const seen = [];
+class Solution {
+  solution(input) {
+    const seen = new Set();
     for (let i = 0; i < input.length; i++) {
-      if (seen.includes(input[i])) {
+      if (seen.has(input[i])) {
         return false;
       }
-      seen.push(input[i]);
+      seen.add(input[i]);
     }
     return true;
   }
-
-  runTests = () => {
-    for (const [input, expected] of Object.entries(this.tests)) {
-      const result = IsUnique.solution(input);
-      console.log(`Running input "${input}" -> ${result === expected ? "PASSED" : "FAILED"}`);
-    }
-  }
 }
 
-const tester = new IsUnique();
-tester.runTests();
+Helper.test(new Solution());

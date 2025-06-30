@@ -2,17 +2,12 @@
 #include <string>
 #include <unordered_map>
 
+#include "Helper.hpp"
+#include "JSON.hpp"
+
 class Solution {
 public:
-  std::unordered_map<std::string, bool> tests = {
-      {"you shall not pass", false},
-      {"you can", true},
-      {"you cannot", false},
-      {"maybe no?", true},
-  };
-
   bool solution(std::string input) {
-    // Write the actual logic of the solution
     std::unordered_map<char, int> charCount;
     for (char c : input) {
       charCount[c]++;
@@ -24,14 +19,14 @@ public:
   }
 };
 
-int main() {
-  Solution s;
-
-  // Example test case execution
-  for (std::pair<std::string, bool> test : s.tests) {
-    std::cout << "Running input '" << test.first << "' -> "
-              << (s.solution(test.first) == test.second ? "PASSED" : "FAILED")
-              << std::endl;
+int main(int argc, char *argv[]) {
+  try {
+    Solution solution;
+    Helper<Solution> tester(argv[argc - 1]);
+    tester.runTests(solution);
+  } catch (const std::exception &ex) {
+    std::cerr << "Error: " << ex.what() << std::endl;
+    return 1;
   }
   return 0;
 }

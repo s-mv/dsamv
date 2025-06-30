@@ -4,7 +4,6 @@ import java.util.*;
 
 // I really want to name this JSONMV
 public class JSON {
-
   public abstract static class JSONValue {
     public enum Type {
       NULL, BOOLEAN, NUMBER, STRING, ARRAY, OBJECT
@@ -133,7 +132,17 @@ public class JSON {
 
     @Override
     public String toString() {
-      return values.toString();
+      StringBuilder sb = new StringBuilder();
+      sb.append('[');
+      boolean first = true;
+      for (JSONValue value : values) {
+        if (!first)
+          sb.append(", ");
+        first = false;
+        sb.append(value);
+      }
+      sb.append(']');
+      return sb.toString();
     }
   }
 
@@ -156,7 +165,17 @@ public class JSON {
 
     @Override
     public String toString() {
-      return values.toString();
+      StringBuilder sb = new StringBuilder();
+      sb.append('{');
+      boolean first = true;
+      for (Map.Entry<String, JSONValue> entry : values.entrySet()) {
+        if (!first)
+          sb.append(", ");
+        first = false;
+        sb.append('"').append(entry.getKey()).append("\": ").append(entry.getValue());
+      }
+      sb.append('}');
+      return sb.toString();
     }
   }
 
@@ -165,7 +184,7 @@ public class JSON {
     private int pos;
 
     public Parser(String input) {
-      this.input = input;
+      this.input = input.replace("\uFEFF", "").trim();
       this.pos = 0;
     }
 
@@ -215,6 +234,7 @@ public class JSON {
         return new JSONObject(map);
       }
       while (true) {
+        skipWhitespace(); // Skip whitespace before parsing key
         String key = parseString();
         skipWhitespace();
         expect(':');
@@ -226,6 +246,7 @@ public class JSON {
           break;
         if (c != ',')
           throw new RuntimeException("Expected ',' or '}' in object!");
+        skipWhitespace(); // Skip whitespace after comma
       }
       return new JSONObject(map);
     }
@@ -246,6 +267,7 @@ public class JSON {
           break;
         if (c != ',')
           throw new RuntimeException("Expected ',' or ']' in array!");
+        skipWhitespace(); // Skip whitespace after comma
       }
       return new JSONArray(list);
     }
@@ -254,8 +276,18 @@ public class JSON {
       int start = pos;
       if (peek() == '-')
         pos++;
-      while (pos < input.length() && Character.isDigit(input.charAt(pos)))
+
+      // check for leading zeros
+      if (pos < input.length() && input.charAt(pos) == '0') {
         pos++;
+        if (pos < input.length() && Character.isDigit(input.charAt(pos))) {
+          throw new RuntimeException("Leading zeros are not allowed in JSON numbers!");
+        }
+      } else {
+        while (pos < input.length() && Character.isDigit(input.charAt(pos)))
+          pos++;
+      }
+
       if (pos < input.length() && input.charAt(pos) == '.') {
         pos++;
         while (pos < input.length() && Character.isDigit(input.charAt(pos)))
@@ -263,7 +295,7 @@ public class JSON {
       }
       if (pos < input.length() && (input.charAt(pos) == 'e' || input.charAt(pos) == 'E')) {
         pos++;
-        if (input.charAt(pos) == '+' || input.charAt(pos) == '-')
+        if (pos < input.length() && (input.charAt(pos) == '+' || input.charAt(pos) == '-'))
           pos++;
         while (pos < input.length() && Character.isDigit(input.charAt(pos)))
           pos++;
@@ -306,9 +338,11 @@ public class JSON {
               sb.append('\t');
               break;
             case 'u':
-              sb.append("\\u");
+              StringBuilder hex = new StringBuilder();
               for (int i = 0; i < 4; i++)
-                sb.append(consume());
+                hex.append(consume());
+              int codePoint = Integer.parseInt(hex.toString(), 16);
+              sb.append((char) codePoint);
               break;
             default:
               throw new RuntimeException("Invalid escape character!");
@@ -328,6 +362,9 @@ public class JSON {
 
     private char peek() {
       skipWhitespace();
+      if (pos >= input.length()) {
+        throw new RuntimeException("Unexpected end of input!");
+      }
       return input.charAt(pos);
     }
 
@@ -346,39 +383,6 @@ public class JSON {
       for (char c : expected.toCharArray()) {
         expect(c);
       }
-    }
-  }
-
-  public static void main(String[] args) {
-    String json = """
-            {
-                "name": "Jane",
-                "age": 28,
-                "married": false,
-                "hobbies": ["reading", "travel", "code"],
-                "address": {
-                    "city": "NYC",
-                    "zip": "10001"
-                },
-                "gpa": 3.75,
-                "spouse": null
-            }
-        """;
-
-    try {
-      Parser parser = new Parser(json);
-      JSONValue root = parser.parse();
-
-      System.out.println("Parsed JSON:");
-      System.out.println(root);
-
-      if (root.getType() == JSONValue.Type.OBJECT) {
-        Map<String, JSONValue> obj = root.asObject();
-        System.out.println("Name: " + obj.get("name").asString());
-        System.out.println("GPA: " + obj.get("gpa").asNumber());
-      }
-    } catch (Exception e) {
-      System.err.println("Parse error: " + e.getMessage());
     }
   }
 }
