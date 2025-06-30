@@ -13,6 +13,8 @@ python dsa.py arrays IsUnique java     # runs arrays/java/IsUnique.java
 python dsa.py arrays Palindrome py     # runs arrays/python/Palindrome.py
 python dsa.py list                     # shows all problems
 python dsa.py list arrays              # shows only arrays problems
+
+python dsa.py clean                    # cleans up build cache
 ```
 
 If there are any issues with `toml`, run `pip install toml` (Python < 3.11).

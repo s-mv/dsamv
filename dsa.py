@@ -109,6 +109,18 @@ if len(sys.argv) < 2:
     print("  js           - Runs with node")
     sys.exit(1)
 
+if sys.argv[1] == "clean":
+    build_dir = Path("build")
+    if build_dir.exists() and build_dir.is_dir():
+        import shutil
+
+        shutil.rmtree(build_dir)
+        coloured_print("Build directory cleaned.", Colours.GREEN)
+    else:
+        coloured_print("No build directory to clean.", Colours.YELLOW)
+    sys.exit(0)
+
+
 if sys.argv[1] == "list":
     list_type = sys.argv[2] if len(sys.argv) > 2 else None
     list_problems(list_type)
@@ -152,7 +164,9 @@ language_runners = {
 runners = get_runner_paths(env_config)
 
 runner_func = language_runners[language]
-success, output = runner_func(file_path, runners, test_file_path=test_file_path, use_colours=USE_COLOURS)
+success, output = runner_func(
+    file_path, runners, test_file_path=test_file_path, use_colours=USE_COLOURS
+)
 
 if not success:
     sys.exit(1)
