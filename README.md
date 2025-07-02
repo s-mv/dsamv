@@ -2,7 +2,8 @@
 
 That's it. Just me doing DSA.
 
-~~PS: I just wrote my own JSON parsers for testing. Isn't the proof enough that I must be good at DSA?~~
+~~PS: I just wrote my own JSON parsers for testing... Isn't the proof enough~~
+~~that I must be good at DSA?~~
 
 Run solutions using **`python dsa.py <type> <problem> [lang]`**.
 
@@ -41,6 +42,11 @@ Each problem type has its own description file:
 - `linkedlist/DESC.md` - Linked List problems
 
 Or just run `python dsa.py list` to see what's implemented!
+
+
+## Write your own
+Refer to [./templates](./templates/) for templates to add  your own test cases
+and problems.
 
 ---
 
