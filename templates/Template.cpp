@@ -5,18 +5,20 @@
 #include "Helper.hpp"
 #include "JSON.hpp"
 
+/*
+ * Hello C++ users.
+ *
+ * This cost me half a leg but I like to think it will save you some time.
+ * Solution::solution is the function you need to implement.
+ * The input and output values can be tweaked to anything.
+ *
+ * Cheers,
+ * smv.
+ */
+
 class Solution {
 public:
-  bool solution(std::string input) {
-    std::unordered_map<char, int> charCount;
-    for (char c : input) {
-      charCount[c]++;
-      if (charCount[c] > 1) {
-        return false;
-      }
-    }
-    return true;
-  }
+  float solution(int xoxox) { return 0.f; }
 };
 
 int main(int argc, char *argv[]) {

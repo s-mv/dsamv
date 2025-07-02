@@ -21,12 +21,25 @@ class Helper:
         passed = 0
         total = 0
 
-        for input_str, expected in tests.items():
-            result = solution_instance.solution(input_str)
-            ok = result == expected
-            print(f"'{input_str}' => {'PASSED' if ok else f'FAILED (got {result})'}")
-            if ok:
-                passed += 1
+        for test_case in tests:
+            input_args = test_case["input"]
+            expected = test_case["expected"]
+
+            if not isinstance(input_args, list):
+                print(f"Error: 'input' must be a list. Got: {type(input_args)}")
+                sys.exit(1)
+
+            try:
+                result = solution_instance.solution(*input_args)
+                ok = result == expected
+                print(
+                    f"Input: {input_args} => {'PASSED' if ok else f'FAILED (got {result}, expected {expected})'}"
+                )
+                if ok:
+                    passed += 1
+            except Exception as e:
+                print(f"Error while testing input {input_args}: {e}")
+
             total += 1
 
         print(f"\n{passed}/{total} tests passed.")

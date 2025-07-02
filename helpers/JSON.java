@@ -234,7 +234,7 @@ public class JSON {
         return new JSONObject(map);
       }
       while (true) {
-        skipWhitespace(); // Skip whitespace before parsing key
+        skipWhitespace();
         String key = parseString();
         skipWhitespace();
         expect(':');
@@ -246,7 +246,7 @@ public class JSON {
           break;
         if (c != ',')
           throw new RuntimeException("Expected ',' or '}' in object!");
-        skipWhitespace(); // Skip whitespace after comma
+        skipWhitespace();
       }
       return new JSONObject(map);
     }
@@ -267,7 +267,7 @@ public class JSON {
           break;
         if (c != ',')
           throw new RuntimeException("Expected ',' or ']' in array!");
-        skipWhitespace(); // Skip whitespace after comma
+        skipWhitespace();
       }
       return new JSONArray(list);
     }

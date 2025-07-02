@@ -12,15 +12,35 @@ class Helper {
     let passed = 0;
     let total = 0;
 
-    for (const [input, expected] of Object.entries(testData)) {
-      const result = solutionInstance.solution(input);
-      const ok = result === expected;
-      console.log(`"${input}" => ${ok ? 'PASSED' : `FAILED (got ${result})`}`);
-      if (ok) passed++;
+    for (const { input, expected } of testData) {
+      if (!Array.isArray(input)) {
+        console.error('Error: Each "input" must be an array.');
+        process.exit(1);
+      }
+
+      try {
+        const result = solutionInstance.solution(...input);
+        const ok = Helper.compareValues(result, expected);
+        console.log(
+          `Input: ${JSON.stringify(input)} => ${ok ? 'PASSED' : `FAILED (got ${JSON.stringify(result)}, expected ${JSON.stringify(expected)})`
+          }`
+        );
+        if (ok) passed++;
+      } catch (error) {
+        console.error(`Error while testing input ${JSON.stringify(input)}: ${error.message}`);
+      }
       total++;
     }
 
     console.log(`\n${passed}/${total} tests passed.`);
+  }
+
+  static compareValues(actual, expected) {
+    if (typeof actual !== typeof expected) return false;
+    if (Array.isArray(actual) && Array.isArray(expected)) {
+      return JSON.stringify(actual) === JSON.stringify(expected);
+    }
+    return actual === expected;
   }
 }
 

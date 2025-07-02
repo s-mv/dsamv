@@ -1,12 +1,11 @@
 package arrays.java;
 
 import helpers.Helper;
-import helpers.StringFunction;
 
 import java.util.HashSet;
 
-public class IsUnique implements StringFunction<Boolean> {
-    public Boolean solution(String input) {
+class Solution {
+    public boolean solution(String input) {
         HashSet<Character> seen = new HashSet<>();
         for (char c : input.toCharArray()) {
             if (seen.contains(c))
@@ -22,6 +21,12 @@ public class IsUnique implements StringFunction<Boolean> {
             return;
         }
 
-        Helper.test(new IsUnique(), args[0]);
+        Helper.test(new Solution(), args[0]);
+    }
+}
+
+public class IsUnique {
+    public static void main(String[] args) {
+        Solution.main(args);
     }
 }

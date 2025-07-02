@@ -17,8 +17,6 @@ python dsa.py list arrays              # shows only arrays problems
 python dsa.py clean                    # cleans up build cache
 ```
 
-If there are any issues with `toml`, run `pip install toml` (Python < 3.11).
-
 ## Supported languages:
 - **cpp** (default) - Compiles with g++ and runs
 - **java** - Compiles with javac and runs
