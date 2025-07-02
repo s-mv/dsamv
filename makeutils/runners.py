@@ -91,7 +91,8 @@ def run_java(file_path, runners, test_file_path=None, use_colours=True):
         runners["JAVA_COMPILER"],
         "-d",
         "build",
-        "helpers/*.java",
+        "helpers/Helper.java",
+        "helpers/JSON.java",
         str(file_path),
     ]
 

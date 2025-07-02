@@ -2,8 +2,6 @@
 
 import sys
 import os
-import subprocess
-import tempfile
 from pathlib import Path
 
 from makeutils.colours import Colours, coloured_print
