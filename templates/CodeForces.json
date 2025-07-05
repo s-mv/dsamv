@@ -1,0 +1,22 @@
+[
+  {
+    "input": [
+      "stdin line 1 for 1st test case",
+      "stdin line 1 for 1st test case [...]"
+    ],
+    "output": [
+      "stdout line 1 for 1st test case",
+      "stdout line 2 for 1st test case"
+    ]
+  },
+  {
+    "input": [
+      "add test cases like this for codeforces"
+    ],
+    "output": [
+      "NOT like Template.json",
+      "if you can write a utility that automates writing cases",
+      "submit a PR, it'd be much helpful"
+    ]
+  }
+]

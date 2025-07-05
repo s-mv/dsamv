@@ -5,6 +5,9 @@ That's it. Just me doing DSA.
 ~~PS: I just wrote my own JSON parsers for testing... Isn't the proof enough~~
 ~~that I must be good at DSA?~~
 
+**Pull requests are welcome for automating testing further (using legitimate APIs**
+**to fetch tests and such things).**
+
 Run solutions using **`python dsa.py <type> <problem> [lang]`**.
 
 ## Example usage:
@@ -17,6 +20,13 @@ python dsa.py list arrays              # shows only arrays problems
 
 python dsa.py clean                    # cleans up build cache
 ```
+
+### Run Codeforces problems:
+```sh
+python dsa.py cf P4A py
+```
+
+The test cases are designed a little differently. Refer to [./templates/Codeforces.json](./templates/Codeforces.json)
 
 ## Supported languages:
 - **cpp** (default) - Compiles with g++ and runs
@@ -45,8 +55,15 @@ Or just run `python dsa.py list` to see what's implemented!
 
 
 ## Write your own
-Refer to [./templates](./templates/) for templates to add  your own test cases
+Refer to [./templates/](./templates/) for templates to add  your own test cases
 and problems.
+
+- [CodeForces.json](./templates/CodeForces.json) JSON template for Codeforces-style problems
+- [Template.json](./templates/Template.json): Basic input-output test case format
+- [Template.cpp](./templates/Template.cpp): C++ starter template for problems
+- [Template.py](./templates/Template.py): Python starter template
+- [Template.java](./templates/Template.java): Java starter template
+- [Template.js](./templates/Template.js): JavaScript starter template
 
 ---
 
