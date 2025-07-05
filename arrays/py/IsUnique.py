@@ -1,14 +1,12 @@
-from Helper import Helper
+from sys import exit
 
+input_str = input()
 
-class Solution:
-    def solution(self, input_str):
-        seen = set()
-        for char in input_str:
-            if char in seen:
-                return False
-            seen.add(char)
-        return True
+seen = set()
+for char in input_str:
+    if char in seen:
+        print("false")
+        exit(0)
+    seen.add(char)
 
-
-Helper.test(Solution())
+print("true")

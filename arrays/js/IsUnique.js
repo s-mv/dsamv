@@ -1,16 +1,20 @@
-import Helper from "../../helpers/Helper.js";
+const stdin = await new Promise((resolve) => {
+  let data = "";
+  process.stdin.setEncoding("utf8");
+  process.stdin.on("data", chunk => data += chunk);
+  process.stdin.on("end", () => resolve(data));
+});
 
-class Solution {
-  solution(input) {
-    const seen = new Set();
-    for (let i = 0; i < input.length; i++) {
-      if (seen.has(input[i])) {
-        return false;
-      }
-      seen.add(input[i]);
-    }
-    return true;
+
+const line = stdin;
+const seen = new Set();
+
+for (let char of line) {
+  if (seen.has(char)) {
+    console.log("false");
+    process.exit(0);
   }
+  seen.add(char);
 }
 
-Helper.test(new Solution());
+console.log("true");

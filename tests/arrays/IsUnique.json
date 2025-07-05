@@ -1,26 +1,6 @@
 [
-  {
-    "input": [
-      "you shall not pass"
-    ],
-    "expected": false
-  },
-  {
-    "input": [
-      "you can"
-    ],
-    "expected": true
-  },
-  {
-    "input": [
-      "you cannot"
-    ],
-    "expected": false
-  },
-  {
-    "input": [
-      "maybe no?"
-    ],
-    "expected": true
-  }
+  {"input": ["you shall not pass"], "output": ["false"]},
+  {"input": ["you can"], "output": ["true"]},
+  {"input": ["you cannot"], "output": ["false"]},
+  {"input": ["maybe no?"], "output": ["true"]}
 ]

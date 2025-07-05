@@ -1,0 +1,16 @@
+[
+  {
+    "input": ["4", "word", "localization", "internationalization", "panama"],
+    "output": ["word", "l10n", "i18n", "panama"]
+  },
+  {
+    "input": [
+      "3",
+      "supercalifragilisticexpialidocious",
+      "hello",
+      "abcdefghijk"
+    ],
+    "output": ["s32s", "hello", "a9k"]
+  },
+  {"input": ["2", "short", "averyverylongword"], "output": ["short", "a15d"]}
+]

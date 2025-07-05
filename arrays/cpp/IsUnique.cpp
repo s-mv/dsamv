@@ -2,31 +2,20 @@
 #include <string>
 #include <unordered_map>
 
-#include "Helper.hpp"
-#include "JSON.hpp"
+int main() {
+  std::string text;
+  std::getline(std::cin, text);
 
-class Solution {
-public:
-  bool solution(std::string input) {
-    std::unordered_map<char, int> charCount;
-    for (char c : input) {
-      charCount[c]++;
-      if (charCount[c] > 1) {
-        return false;
-      }
+  std::unordered_map<char, int> charCount;
+  bool unique = true;
+  for (char c : text) {
+    if (++charCount[c] > 1) {
+      unique = false;
+      break;
     }
-    return true;
   }
-};
 
-int main(int argc, char *argv[]) {
-  try {
-    Solution solution;
-    auto tester = makeHelper(solution, argv[argc - 1]);
-    tester.runTests(solution);
-  } catch (const std::exception &ex) {
-    std::cerr << "Error: " << ex.what() << std::endl;
-    return 1;
-  }
+  std::cout << (unique ? "true" : "false") << '\n';
+
   return 0;
 }

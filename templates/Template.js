@@ -1,21 +1,24 @@
-import Helper from "../../helpers/Helper.js";
+// this is your input
+const stdin = await new Promise((resolve) => {
+  let data = "";
+  process.stdin.setEncoding("utf8");
+  process.stdin.on("data", chunk => data += chunk);
+  process.stdin.on("end", () => resolve(data));
+});
 
-/* 
- * Dear Javascripters,
- * This and Python was a breeze to set up for me.
- *
- * So it's equally easy to use.
- * input -> (self, ...)
- * return the output (any type)
- * That's it.
- *
- * Sincerely, me.
- */
+// you can split multiline input by using stind.split("\n")
+// this code is equivalent to arrays/js/IsUnique.js
+const line = stdin;
+const seen = new Set();
 
-class Solution {
-  solution(input) {
-    return 0;
+for (let char of line) {
+  if (seen.has(char)) {
+    // console.log output to be read by the tests
+    console.log("false");
+    process.exit(0);
   }
+  seen.add(char);
 }
 
-Helper.test(new Solution());
+// console.log output to be read by the tests
+console.log("true");

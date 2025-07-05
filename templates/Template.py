@@ -1,22 +1,16 @@
-from Helper import Helper
+from sys import exit
 
-"""
-Hello Pythoneers,
+# this code is equivalent to arrays/py/IsUnique.py
+# read input given by the runner
+input_str = input()
 
-This and JS was a breeze to set up for me.
+seen = set()
+for char in input_str:
+    if char in seen:
+        # present output to tests by printing it
+        print("false")
+        exit(0)
+    seen.add(char)
 
-So it's equally easy to use.
-input -> (self, ...)
-return the output (any type)
-That's it.
-
-Sincerely, me.
-"""
-
-
-class Solution:
-    def solution(self, input):
-        return True
-
-
-Helper.test(Solution())
+# present output to tests by printing it
+print("true")

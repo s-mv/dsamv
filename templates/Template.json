@@ -1,37 +1,12 @@
 [
   {
-    "input": [
-      "this is a sample argument",
-      "this is another one argument"
-    ],
-    "output": "This is a sample argument and this is another one argument."
+    "input": ["these are sample tests for the IsUnique problem"],
+    "output": ["false"]
   },
   {
-    "input": [
-      "first argument",
-      "second argument"
-    ],
-    "output": "First argument and second argument."
+    "input": ["each item in the array is a new line, you can use this smartly"],
+    "output": ["false"]
   },
-  {
-    "input": [
-      "example input",
-      "additional input"
-    ],
-    "output": "Example input and additional input."
-  },
-  {
-    "input": [
-      "test case",
-      "another test case"
-    ],
-    "output": "Test case and another test case."
-  },
-  {
-    "input": [
-      "sample text",
-      "more sample text"
-    ],
-    "output": "Sample text and more sample text."
-  }
+  {"input": ["you can"], "output": ["true"]},
+  {"input": ["maybe no?"], "output": ["true"]}
 ]

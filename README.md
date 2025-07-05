@@ -22,8 +22,10 @@ python dsa.py clean                    # cleans up build cache
 ```
 
 ### Run Codeforces problems:
+Example:
 ```sh
-python dsa.py cf P4A py
+python dsa.py cf P4A
+python dsa.py codeforces P71A cpp
 ```
 
 The test cases are designed a little differently. Refer to [./templates/Codeforces.json](./templates/Codeforces.json)

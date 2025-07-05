@@ -1,26 +1,6 @@
 [
-  {
-    "input": [
-      "abcba"
-    ],
-    "expected": true
-  },
-  {
-    "input": [
-      "abccba"
-    ],
-    "expected": true
-  },
-  {
-    "input": [
-      "abbabbaa"
-    ],
-    "expected": false
-  },
-  {
-    "input": [
-      "a"
-    ],
-    "expected": true
-  }
+  {"input": ["abcba"], "output": ["true"]},
+  {"input": ["abccba"], "output": ["true"]},
+  {"input": ["abbabbaa"], "output": ["false"]},
+  {"input": ["a"], "output": ["true"]}
 ]

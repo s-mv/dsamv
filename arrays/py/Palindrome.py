@@ -1,11 +1,9 @@
-from Helper import Helper
+from sys import exit
 
+input_str = input()
 
-class Solution:
-    def solution(self, input_str):
-        for i in range(len(input_str) // 2):
-            if input_str[i] != input_str[-(i + 1)]:
-                return False
-        return True
-
-Helper.test(Solution())
+for i in range(len(input_str) // 2):
+    if input_str[i] != input_str[-(i + 1)]:
+        print("false")
+        exit(0)
+print("true")

@@ -2,33 +2,23 @@
 #include <string>
 #include <unordered_map>
 
-#include "Helper.hpp"
-#include "JSON.hpp"
+int main() {
+  // this code is equivalent to arrays/cpp/IsUnique.cpp
+  // read input given by the runner
+  std::string text;
+  std::getline(std::cin, text);
 
-/*
- * Hello C++ users.
- *
- * This cost me half a leg but I like to think it will save you some time.
- * Solution::solution is the function you need to implement.
- * The input and output values can be tweaked to anything.
- *
- * Cheers,
- * smv.
- */
-
-class Solution {
-public:
-  float solution(int xoxox) { return 0.f; }
-};
-
-int main(int argc, char *argv[]) {
-  try {
-    Solution solution;
-    auto tester = makeHelper(solution, argv[argc - 1]);
-    tester.runTests(solution);
-  } catch (const std::exception &ex) {
-    std::cerr << "Error: " << ex.what() << std::endl;
-    return 1;
+  std::unordered_map<char, int> charCount;
+  bool unique = true;
+  for (char c : text) {
+    if (++charCount[c] > 1) {
+      unique = false;
+      break;
+    }
   }
+
+  // print the output - this will be read by the tests
+  std::cout << (unique ? "true" : "false") << '\n';
+
   return 0;
 }

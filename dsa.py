@@ -1,14 +1,12 @@
 #!/usr/bin/env python3
 
 import sys
-import os
 from pathlib import Path
 import subprocess
 import json
-
 from makeutils.colours import Colours, coloured_print
 from makeutils.env import load_env, get_runner_paths
-from makeutils.runners import run_cpp, run_java, run_javascript, run_process, run_python
+from makeutils.runners import run_process
 
 env_config = load_env()
 USE_COLOURS = env_config.get("COLOUR", "False").lower() == "true"
@@ -63,7 +61,6 @@ def list_problems(problem_type=None):
             continue
 
         coloured_print(f"\n{topic.lower()}:", Colours.BOLD)
-
         problems = {}
 
         for json_file in test_dir.glob("*.json"):
@@ -85,6 +82,121 @@ def list_problems(problem_type=None):
                 coloured_print(f"  {problem} (test cases only)", Colours.YELLOW)
 
 
+def run_io_testcases(problem_type, problem_name, language, env_config, use_colours):
+    runners = get_runner_paths(env_config)
+
+    LANGUAGE_RUNNERS = {
+        "cpp": {
+            "ext": "cpp",
+            "compile": lambda file: [
+                runners["CPP_COMPILER"],
+                "-std=c++17",
+                "-O2",
+                str(file),
+                "-o",
+                "temp.out",
+            ],
+            "run": lambda: ["./temp.out"],
+        },
+        "java": {
+            "ext": "java",
+            "compile": lambda file: [
+                runners["JAVA_COMPILER"],
+                "-d",
+                "build",
+                str(file),
+            ],
+            "run": lambda: [runners["JAVA_RUNNER"], "-cp", "build", problem_name],
+        },
+        "py": {
+            "ext": "py",
+            "compile": None,
+            "run": lambda: [runners["PYTHON_RUNNER"], str(file_path)],
+        },
+        "js": {
+            "ext": "js",
+            "compile": None,
+            "run": lambda: [runners["JS_RUNNER"], str(file_path)],
+        },
+    }
+
+    lang = LANGUAGE_RUNNERS.get(language)
+    if not lang:
+        coloured_print(f"Unsupported language: {language}", Colours.RED)
+        sys.exit(1)
+
+    file_path = Path(problem_type) / language / f"{problem_name}.{lang['ext']}"
+    test_file_path = Path("tests") / problem_type / f"{problem_name}.json"
+
+    if not file_path.exists():
+        coloured_print(f"Code file not found: {file_path}", Colours.RED)
+        sys.exit(1)
+    if not test_file_path.exists():
+        coloured_print(f"Test file not found: {test_file_path}", Colours.RED)
+        sys.exit(1)
+
+    if lang["compile"]:
+        compile_cmd = lang["compile"](file_path)
+        success, _ = run_process(compile_cmd, use_colours=use_colours)
+        if not success:
+            coloured_print("Compilation failed.", Colours.RED)
+            sys.exit(1)
+
+    with open(test_file_path) as f:
+        test_cases = json.load(f)
+
+    passed = 0
+    for i in range(len(test_cases)):
+        test_case = test_cases[i]
+        input_data = "\n".join(test_case["input"])
+        expected_output = "\n".join(test_case["output"])
+
+        run_cmd = lang["run"]()
+        proc = subprocess.Popen(
+            run_cmd,
+            stdin=subprocess.PIPE,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            text=True,
+        )
+        actual_output, _ = proc.communicate(input=input_data)
+
+        actual_lines = [line.strip() for line in actual_output.strip().splitlines()]
+        expected_lines = [line.strip() for line in expected_output.strip().splitlines()]
+
+        if actual_lines == expected_lines:
+            coloured_print(f"Test case {i} passed", Colours.GREEN, use_colours=use_colours)
+            passed += 1
+        else:
+            coloured_print(f"Test case {i} failed", Colours.RED, use_colours=use_colours)
+            for i, (exp, got) in enumerate(zip(expected_lines, actual_lines), 1):
+                if exp != got:
+                    print(f"  Line {i}:")
+                    coloured_print(f"    Expected: {exp}", Colours.YELLOW, use_colours=use_colours)
+                    coloured_print(f"    Got     : {got}", Colours.CYAN, use_colours=use_colours)
+            if len(expected_lines) > len(actual_lines):
+                for i in range(len(actual_lines), len(expected_lines)):
+                    print(f"  Line {i+1}:")
+                    coloured_print(f"    Expected: {expected_lines[i]}", Colours.YELLOW, use_colours=use_colours)
+                    coloured_print(f"    Got     : <missing>", Colours.CYAN, use_colours=use_colours)
+            elif len(actual_lines) > len(expected_lines):
+                for i in range(len(expected_lines), len(actual_lines)):
+                    print(f"  Line {i+1}:")
+                    coloured_print(f"    Expected: <none>", Colours.YELLOW, use_colours=use_colours)
+                    coloured_print(f"    Got     : {actual_lines[i]}", Colours.CYAN, use_colours=use_colours)
+
+
+    print(f"\nResult: {passed}/{len(test_cases)} test cases passed.")
+
+    if language == "cpp":
+        Path("temp.out").unlink(missing_ok=True)
+
+    if passed != len(test_cases):
+        coloured_print(
+            "Some test cases failed.", Colours.YELLOW, use_colours=use_colours
+        )
+
+
 if len(sys.argv) < 2:
     coloured_print("Usage: python dsa.py <type> <problem> [lang]", Colours.BOLD)
     coloured_print("       python dsa.py list [type]", Colours.BOLD)
@@ -104,103 +216,6 @@ if len(sys.argv) < 2:
     print("  cf -> codeforces, graph -> graphs, dp -> DP, linkedlists -> linkedlist")
     sys.exit(1)
 
-
-def run_codeforces(problem_name, language, env_config, use_colours):
-    file_path = Path("codeforces") / language / f"{problem_name}.{language}"
-    test_file_path = Path("tests") / "codeforces" / f"{problem_name}.json"
-
-    if not file_path.exists():
-        coloured_print(
-            f"Error: Code file not found: {file_path}",
-            Colours.RED,
-            use_colours=use_colours,
-        )
-        sys.exit(1)
-
-    if not test_file_path.exists():
-        coloured_print(
-            f"Error: Test file not found: {test_file_path}",
-            Colours.RED,
-            use_colours=use_colours,
-        )
-        sys.exit(1)
-
-    with open(test_file_path, "r") as f:
-        test_cases = json.load(f)
-
-    runners = get_runner_paths(env_config)
-    language_runners = {
-        "cpp": [
-            runners["CPP_COMPILER"],
-            "-std=c++17",
-            "-O2",
-            str(file_path),
-            "-o",
-            "temp.out",
-        ],
-        "java": [runners["JAVA_COMPILER"], "-d", "build", str(file_path)],
-        "py": [runners["PYTHON_RUNNER"], str(file_path)],
-        "js": [runners["JS_RUNNER"], str(file_path)],
-    }
-
-    if language not in language_runners:
-        coloured_print(
-            f"Error: Unsupported language '{language}'",
-            Colours.RED,
-            use_colours=use_colours,
-        )
-        sys.exit(1)
-
-    if language in ["cpp", "java"]:
-        compile_cmd = language_runners[language]
-        success, _ = run_process(compile_cmd, use_colours=use_colours)
-        if not success:
-            coloured_print(
-                "Compilation failed. Please check your code for errors.",
-                Colours.RED,
-                use_colours=use_colours,
-            )
-            sys.exit(1)
-
-    passed = 0
-    for test_case in test_cases:
-        input_data = "\n".join(test_case["input"])
-        expected_output = "\n".join(test_case["output"])
-
-        if language == "cpp":
-            run_cmd = ["./temp.out"]
-        elif language == "java":
-            run_cmd = [runners["JAVA_RUNNER"], "-cp", "build", problem_name]
-        else:
-            run_cmd = language_runners[language]
-
-        process = subprocess.Popen(
-            run_cmd, stdin=subprocess.PIPE, stdout=subprocess.PIPE, text=True
-        )
-        actual_output, _ = process.communicate(input=input_data)
-
-        if actual_output.strip() == expected_output.strip():
-            coloured_print("Test case passed", Colours.GREEN, use_colours=use_colours)
-            passed = passed + 1
-            print(f"Input:\n{input_data}\n")
-        else:
-            coloured_print("Test case failed", Colours.RED, use_colours=use_colours)
-            print(f"Input:\n{input_data}")
-            print(f"Expected:\n{expected_output}")
-            print(f"Got:\n{actual_output.strip()}\n")
-
-    print(f"\nResult: {passed}/{len(test_cases)} test cases passed.")
-    if passed != len(test_cases):
-        coloured_print(
-            "Some test cases failed. Please review the output above.",
-            Colours.YELLOW,
-            use_colours=use_colours,
-        )
-
-    if language == "cpp":
-        Path("temp.out").unlink()
-
-
 if sys.argv[1] == "clean":
     build_dir = Path("build")
     if build_dir.exists() and build_dir.is_dir():
@@ -211,7 +226,6 @@ if sys.argv[1] == "clean":
     else:
         coloured_print("No build directory found to clean.", Colours.YELLOW)
     sys.exit(0)
-
 
 if sys.argv[1] == "list":
     list_type = sys.argv[2] if len(sys.argv) > 2 else None
@@ -228,49 +242,4 @@ problem_type = PROBLEM_TYPE_ALIASES.get(
 )
 language = LANGUAGE_ALIASES.get(language_input.lower(), language_input.lower())
 
-file_path = get_file_path(problem_type, problem_name, language)
-
-if not file_path:
-    coloured_print(f"Error: Unsupported language '{language}'", Colours.RED)
-    print("Supported languages: cpp, java, python, javascript")
-    print(
-        "Aliases: cf -> codeforces, graph -> graphs, linkedlists -> linkedlist, dp -> DP"
-    )
-    sys.exit(1)
-
-if not file_path.exists():
-    coloured_print(f"Code file not found: {file_path}", Colours.YELLOW)
-    print("Tip: Make sure the file exists or consider contributing a solution.")
-    sys.exit(1)
-
-test_file_path = get_test_file_path(problem_type, problem_name)
-
-if not test_file_path.exists():
-    coloured_print(f"Test file not found: {test_file_path}", Colours.YELLOW)
-    print("This problem will run without correctness tests.")
-
-if problem_type == "codeforces":
-    run_codeforces(problem_name, language, env_config, USE_COLOURS)
-    sys.exit(0)
-
-
-language_runners = {
-    "cpp": run_cpp,
-    "java": run_java,
-    "py": run_python,
-    "js": run_javascript,
-}
-
-runners = get_runner_paths(env_config)
-
-runner_func = language_runners.get(language)
-if not runner_func:
-    coloured_print(f"Error: Unsupported language runner for '{language}'", Colours.RED)
-    sys.exit(1)
-
-success, output = runner_func(
-    file_path, runners, test_file_path=test_file_path, use_colours=USE_COLOURS
-)
-
-if not success:
-    sys.exit(1)
+run_io_testcases(problem_type, problem_name, language, env_config, USE_COLOURS)
