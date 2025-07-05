@@ -1,0 +1,162 @@
+[
+  {
+    "input": [
+      "8"
+    ],
+    "output": [
+      "YES"
+    ]
+  },
+  {
+    "input": [
+      "5"
+    ],
+    "output": [
+      "NO"
+    ]
+  },
+  {
+    "input": [
+      "4"
+    ],
+    "output": [
+      "YES"
+    ]
+  },
+  {
+    "input": [
+      "3"
+    ],
+    "output": [
+      "NO"
+    ]
+  },
+  {
+    "input": [
+      "2"
+    ],
+    "output": [
+      "NO"
+    ]
+  },
+  {
+    "input": [
+      "1"
+    ],
+    "output": [
+      "NO"
+    ]
+  },
+  {
+    "input": [
+      "7"
+    ],
+    "output": [
+      "NO"
+    ]
+  },
+  {
+    "input": [
+      "6"
+    ],
+    "output": [
+      "YES"
+    ]
+  },
+  {
+    "input": [
+      "10"
+    ],
+    "output": [
+      "YES"
+    ]
+  },
+  {
+    "input": [
+      "9"
+    ],
+    "output": [
+      "NO"
+    ]
+  },
+  {
+    "input": [
+      "53"
+    ],
+    "output": [
+      "NO"
+    ]
+  },
+  {
+    "input": [
+      "77"
+    ],
+    "output": [
+      "NO"
+    ]
+  },
+  {
+    "input": [
+      "32"
+    ],
+    "output": [
+      "YES"
+    ]
+  },
+  {
+    "input": [
+      "44"
+    ],
+    "output": [
+      "YES"
+    ]
+  },
+  {
+    "input": [
+      "98"
+    ],
+    "output": [
+      "YES"
+    ]
+  },
+  {
+    "input": [
+      "99"
+    ],
+    "output": [
+      "NO"
+    ]
+  },
+  {
+    "input": [
+      "90"
+    ],
+    "output": [
+      "YES"
+    ]
+  },
+  {
+    "input": [
+      "67"
+    ],
+    "output": [
+      "NO"
+    ]
+  },
+  {
+    "input": [
+      "100"
+    ],
+    "output": [
+      "YES"
+    ]
+  },
+  {
+    "input": [
+      "88"
+    ],
+    "output": [
+      "YES"
+    ]
+  }
+]

@@ -1,0 +1,26 @@
+[
+  {
+    "input": [
+      "abcba"
+    ],
+    "expected": true
+  },
+  {
+    "input": [
+      "abccba"
+    ],
+    "expected": true
+  },
+  {
+    "input": [
+      "abbabbaa"
+    ],
+    "expected": false
+  },
+  {
+    "input": [
+      "a"
+    ],
+    "expected": true
+  }
+]
