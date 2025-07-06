@@ -28,8 +28,6 @@ python dsa.py cf P4A
 python dsa.py codeforces P71A cpp
 ```
 
-The test cases are designed a little differently. Refer to [./templates/Codeforces.json](./templates/Codeforces.json)
-
 ## Supported languages:
 - **cpp** (default) - Compiles with g++ and runs
 - **java** - Compiles with javac and runs
@@ -37,7 +35,7 @@ The test cases are designed a little differently. Refer to [./templates/Codeforc
 - **js** - Runs with node
 
 ## Configuration:
-Create a `.env` file to customize compiler paths and enable colors:
+You may modify the `.env` file to customize compiler paths and enable colors:
 ```bash
 COLOUR=True
 CPP_COMPILER=g++
