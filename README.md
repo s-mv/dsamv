@@ -1,6 +1,9 @@
 # smv's DSA repository
 
-That's it. Just me doing DSA.
+Do your DSA in the CLI, because that's what crazy people do.
+
+Might repurpose this for something crazier like DSA in particular assembly
+flavours. I might survive this experience somehow and live to see it work.
 
 ~~PS: I just wrote my own JSON parsers for testing... Isn't the proof enough~~
 ~~that I must be good at DSA?~~
